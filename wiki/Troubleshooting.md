@@ -18,4 +18,4 @@ L’ordi vole ces touches. On les garde en quiz. On ne peut pas les « écouter 
 
 ### La progression a disparu / Progress vanished
 
-Elle est dans `localStorage` (`raccourcis-flash`). Fenêtre privée, autre navigateur, ou vidage du site = zéro. Rien n’est sur un serveur.
+Elle est dans `localStorage` (`shortcut-flash`). Fenêtre privée, autre navigateur, ou vidage du site = zéro. Rien n’est sur un serveur.

@@ -8,7 +8,7 @@ import {
 } from './keys.js';
 
 const $ = (id) => document.getElementById(id);
-const LS = 'raccourcis-flash';
+const LS = 'shortcut-flash';
 const BOSS_SECS = 90;
 
 let lang = 'fr';

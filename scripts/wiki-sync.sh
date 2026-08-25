@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-WIKI_URL="${WIKI_URL:-https://github.com/fschmutz/raccourcis-flash.wiki.git}"
+WIKI_URL="${WIKI_URL:-https://github.com/fschmutz/shortcut-flash.wiki.git}"
 
 if [ ! -d "$ROOT/wiki" ]; then
     echo "wiki-sync: no wiki/ directory in $ROOT" >&2

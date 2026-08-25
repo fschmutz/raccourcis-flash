@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/fschmutz/raccourcis-flash/main/assets/mascot.png" alt="Raccourcis Flash" width="200">
+<img src="https://raw.githubusercontent.com/fschmutz/shortcut-flash/main/assets/mascot.png" alt="Raccourcis Flash" width="200">
 
 </div>
 

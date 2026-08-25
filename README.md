@@ -5,17 +5,17 @@
 **Une quête. Des missions. Un boss. Les raccourcis clavier, expliqués comme tu as 12 ans.**
 **One quest. Several missions. A boss. Keyboard shortcuts, explained like you are 12.**
 
-[![Live](https://img.shields.io/badge/live-fschmutz.github.io-6C3BFF?style=for-the-badge)](https://fschmutz.github.io/raccourcis-flash/)
+[![Live](https://img.shields.io/badge/live-fschmutz.github.io-6C3BFF?style=for-the-badge)](https://fschmutz.github.io/shortcut-flash/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-FFE566?style=for-the-badge)](LICENSE)
-[![Privacy](https://img.shields.io/badge/privacy-nothing_uploaded-0D0624?style=for-the-badge)](https://github.com/fschmutz/raccourcis-flash/wiki/Privacy)
-[![Wiki](https://img.shields.io/badge/wiki-how_it_works-C8FF2E?style=for-the-badge)](https://github.com/fschmutz/raccourcis-flash/wiki)
+[![Privacy](https://img.shields.io/badge/privacy-nothing_uploaded-0D0624?style=for-the-badge)](https://github.com/fschmutz/shortcut-flash/wiki/Privacy)
+[![Wiki](https://img.shields.io/badge/wiki-how_it_works-C8FF2E?style=for-the-badge)](https://github.com/fschmutz/shortcut-flash/wiki)
 
 <img src="assets/hero.png" alt="Raccourcis Flash — prénom Paloma, âge 12, clavier, C'EST PARTI" width="920">
 
 <img src="assets/mascot.png" alt="Raccourcis Flash — keycap hero with a cape" width="360">
 
-**[Ouvrir le jeu / Open the live app →](https://fschmutz.github.io/raccourcis-flash/)**
-· [wiki](https://github.com/fschmutz/raccourcis-flash/wiki)
+**[Ouvrir le jeu / Open the live app →](https://fschmutz.github.io/shortcut-flash/)**
+· [wiki](https://github.com/fschmutz/shortcut-flash/wiki)
 
 </div>
 
@@ -59,7 +59,7 @@ Four randomized challenges per mission (press / what-does / which-keys / true-fa
 
 ## Privacy
 
-No analytics, cookies, Sentry, Google, or CDN at runtime. Fonts are self-hosted woff2 (Bungee, Fredoka, DM Mono — OFL). CSP is `default-src 'self'` with `connect-src 'self'` (service worker). Details: [wiki/Privacy](https://github.com/fschmutz/raccourcis-flash/wiki/Privacy).
+No analytics, cookies, Sentry, Google, or CDN at runtime. Fonts are self-hosted woff2 (Bungee, Fredoka, DM Mono — OFL). CSP is `default-src 'self'` with `connect-src 'self'` (service worker). Details: [wiki/Privacy](https://github.com/fschmutz/shortcut-flash/wiki/Privacy).
 
 ## Run it locally
 

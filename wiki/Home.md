@@ -1,13 +1,13 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/fschmutz/raccourcis-flash/main/assets/mascot.png" alt="Raccourcis Flash — keycap hero" width="280">
+<img src="https://raw.githubusercontent.com/fschmutz/shortcut-flash/main/assets/mascot.png" alt="Raccourcis Flash — keycap hero" width="280">
 
 # RACCOURCIS **FLASH**
 
 **Une quête. Des missions. Un boss.**  
 **One quest. Several missions. A boss.**
 
-[**▶ Jouer / Play**](https://fschmutz.github.io/raccourcis-flash/)
+[**▶ Jouer / Play**](https://fschmutz.github.io/shortcut-flash/)
 
 Rien n’est envoyé. · Nothing is uploaded.
 
@@ -21,7 +21,7 @@ Borne d’arcade dans l’onglet. Prénom + âge (10–15), Windows / Mac / Linu
 
 Les records restent sur l’appareil. Pas de compte, pas de pub.
 
-**[Ouvrir le jeu →](https://fschmutz.github.io/raccourcis-flash/)**
+**[Ouvrir le jeu →](https://fschmutz.github.io/shortcut-flash/)**
 
 ### English
 
@@ -29,7 +29,7 @@ An arcade cabinet in the tab. First name + age (10–15), Windows / Mac / Linux.
 
 Progress stays on the device. No account, no ads.
 
-**[Open the game →](https://fschmutz.github.io/raccourcis-flash/)**
+**[Open the game →](https://fschmutz.github.io/shortcut-flash/)**
 
 ---
 

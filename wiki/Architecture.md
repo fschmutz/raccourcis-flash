@@ -16,4 +16,4 @@ wiki/             source → wiki GitHub via scripts/wiki-sync.sh
 test/             node --test
 ```
 
-Le wiki GitHub est un dépôt à part (`raccourcis-flash.wiki.git`). On édite `wiki/*.md` ici. Pas d’Action `wiki.yml` (pas de scope `workflow`) : lancer le script après la première page.
+Le wiki GitHub est un dépôt à part (`shortcut-flash.wiki.git`). On édite `wiki/*.md` ici. Pas d’Action `wiki.yml` (pas de scope `workflow`) : lancer le script après la première page.
