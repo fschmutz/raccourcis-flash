@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { matchKeydown, formatCombo, detectOS, eventFromChord, highlightKeys, isOsEaten } from '../js/keys.js';
+import { matchKeydown, formatCombo, detectOS, eventFromChord, highlightKeys, isOsEaten, detectHands, isRealKeyboardEvent } from '../js/keys.js';
 import {
   shuffle,
   mulberry32,
@@ -12,9 +12,16 @@ import {
   missionTemplateCounts,
   regularMissionIds,
   allFacts,
-  COPY_WORDS
+  COPY_WORDS,
+  allowedTypes,
+  TOUCH_TYPES,
+  KEYBOARD_TYPES
 } from '../js/challenges.js';
 import { MISSIONS, regularMissions, bossPoolCovers } from '../js/missions.js';
+import { STR } from '../js/i18n.js';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
 function ev(partial) {
   return {
@@ -204,4 +211,96 @@ test('MISSIONS linear order is 12 long with a boss last', () => {
   assert.equal(MISSIONS[11].id, 'boss');
   assert.equal(MISSIONS[11].isBoss, true);
   MISSIONS.forEach((m, i) => assert.equal(m.index, i + 1));
+});
+
+const here = dirname(fileURLToPath(import.meta.url));
+const root = join(here, '..');
+
+test('no age leftovers in player-facing sources', () => {
+  const files = [
+    'js/app.js', 'js/i18n.js', 'js/challenges.js', 'js/missions.js', 'js/keys.js',
+    'index.html', 'package.json', 'manifest.webmanifest'
+  ];
+  for (const rel of files) {
+    const t = readFileSync(join(root, rel), 'utf8');
+    assert.equal(t.includes('ageEyebrow'), false, rel + ' ageEyebrow');
+    assert.equal(t.includes('ageHint'), false, rel + ' ageHint');
+    assert.equal(t.includes('data-age'), false, rel + ' data-age');
+    assert.equal(/player\.age/.test(t), false, rel + ' player.age');
+    assert.equal(/id="ages"/.test(t), false, rel + ' ages picker');
+  }
+  for (const lang of ['fr', 'en']) {
+    assert.equal(STR[lang].ageEyebrow, undefined);
+    assert.equal(STR[lang].ageHint, undefined);
+  }
+});
+
+test('detectHands: touch vs keyboard rules', () => {
+  assert.equal(detectHands({ maxTouchPoints: 0, pointerCoarse: false, keyboardSeen: false, viewportWidth: 390 }), 'keyboard');
+  assert.equal(detectHands({ maxTouchPoints: 5, pointerCoarse: true, keyboardSeen: false, viewportWidth: 390 }), 'touch');
+  assert.equal(detectHands({ maxTouchPoints: 5, pointerCoarse: false, keyboardSeen: false, viewportWidth: 390 }), 'touch');
+  assert.equal(detectHands({ maxTouchPoints: 5, pointerCoarse: false, keyboardSeen: false, viewportWidth: 1200 }), 'keyboard');
+  assert.equal(detectHands({ maxTouchPoints: 5, pointerCoarse: false, keyboardSeen: true, viewportWidth: 390 }), 'keyboard');
+  assert.equal(detectHands({ maxTouchPoints: 5, pointerCoarse: true, keyboardSeen: true, viewportWidth: 390 }), 'touch');
+  assert.equal(isRealKeyboardEvent({ key: 'c', repeat: false, targetTag: 'BODY' }), true);
+  assert.equal(isRealKeyboardEvent({ key: 'c', repeat: false, targetTag: 'INPUT' }), false);
+  assert.equal(isRealKeyboardEvent({ key: 'c', repeat: true, targetTag: 'BODY' }), false);
+});
+
+test('touch hands never emit press; keyboard can', () => {
+  const facts = allFacts();
+  let keyboardPress = 0;
+  for (const fact of facts) {
+    const touch = allowedTypes(fact, 'touch');
+    assert.equal(touch.includes('press'), false, fact.id + ' touch press');
+    for (const t of touch) assert.ok(TOUCH_TYPES.includes(t), fact.id + ' ' + t);
+    const kb = allowedTypes(fact, 'keyboard');
+    for (const t of kb) assert.ok(KEYBOARD_TYPES.includes(t), fact.id + ' ' + t);
+    if (kb.includes('press')) keyboardPress += 1;
+  }
+  assert.ok(keyboardPress >= 8, 'keyboard should still get press challenges: ' + keyboardPress);
+
+  for (let n = 1; n <= 12; n++) {
+    const touchQ = generateMissionChallenges('copy', { os: 'win', lang: 'fr', now: n, name: 'Paloma', hands: 'touch' });
+    for (const ch of touchQ) assert.notEqual(ch.type, 'press', 'mission1 touch press');
+    const bossT = generateBossGauntlet({ os: 'mac', lang: 'en', name: 'Mia', now: n * 11, hands: 'touch' });
+    for (const ch of bossT) assert.notEqual(ch.type, 'press', 'boss touch press');
+    const kbQ = generateMissionChallenges('copy', { os: 'win', lang: 'fr', now: n, name: 'Paloma', hands: 'keyboard' });
+    for (const ch of kbQ) assert.ok(KEYBOARD_TYPES.includes(ch.type), ch.type);
+  }
+});
+
+test('20 seeded playthroughs of mission 1 + boss', () => {
+  const names = ['Paloma', 'Léo', 'Mia', 'Noah', 'Zoé', 'Hugo', 'Inès', 'Jade', 'Louis', 'Nina'];
+  let pass = 0;
+  for (let i = 0; i < 20; i++) {
+    const name = names[i % names.length];
+    const now = 1_700_000_000_000 + i * 86_400_000 + i * 17;
+    const hands = i % 2 === 0 ? 'touch' : 'keyboard';
+    const os = ['win', 'mac', 'linux'][i % 3];
+    const lang = i % 2 === 0 ? 'fr' : 'en';
+    const allowed = hands === 'touch' ? TOUCH_TYPES : KEYBOARD_TYPES;
+    const m1 = generateMissionChallenges('copy', { os, lang, name, now, hands });
+    const boss = generateBossGauntlet({ os, lang, name, now: now + 3, hands });
+    assert.equal(m1.length, 4, 'm1 length ' + i);
+    assert.equal(boss.length, 10, 'boss length ' + i);
+    for (const ch of [...m1, ...boss]) {
+      assert.ok(ch.prompt && String(ch.prompt).trim().length > 0, 'prompt ' + ch.type);
+      assert.ok(allowed.includes(ch.type), `type ${ch.type} not allowed for ${hands}`);
+      assert.ok(ch.answer !== undefined && ch.answer !== null && ch.answer !== '', 'answer');
+      if (ch.decoys) {
+        for (const d of ch.decoys) assert.notEqual(d, ch.answer, 'decoy equals answer');
+      }
+      if (ch.type === 'what') {
+        assert.ok(ch.options.includes(ch.answer));
+        for (const d of ch.decoys) assert.notEqual(d, ch.answer);
+      }
+      if (hands === 'touch') assert.notEqual(ch.type, 'press');
+    }
+    const types = [...m1.map((c) => c.type), '|', ...boss.map((c) => c.type)].join(',');
+    console.log(`run ${String(i + 1).padStart(2, '0')} ${name} ${os} ${hands} ${lang} ${types} OK`);
+    pass += 1;
+  }
+  assert.equal(pass, 20);
+  console.log('20-run result: ' + pass + '/20');
 });

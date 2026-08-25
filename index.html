@@ -96,24 +96,24 @@
   <section class="panel" id="who">
     <p class="eyebrow" id="whoEyebrow">Qui joue aujourd’hui ?</p>
     <input class="field" id="pname" type="text" maxlength="14" autocomplete="off"
-           spellcheck="false" placeholder="Ton prénom" value="Paloma">
-    <p class="eyebrow spaced" id="ageEyebrow">Ton âge</p>
-    <div class="ages" id="ages">
-      <button type="button" class="chip" data-age="10" aria-pressed="false">10</button>
-      <button type="button" class="chip" data-age="11" aria-pressed="false">11</button>
-      <button type="button" class="chip" data-age="12" aria-pressed="true">12</button>
-      <button type="button" class="chip" data-age="13" aria-pressed="false">13</button>
-      <button type="button" class="chip" data-age="14" aria-pressed="false">14</button>
-      <button type="button" class="chip" data-age="15" aria-pressed="false">15</button>
+           spellcheck="false" placeholder="Ton prénom" value="Paloma" inputmode="text" enterkeyhint="done">
+    <div class="situation" id="situationCard">
+      <p class="sit-title" id="sitTitle">On dirait un ordi avec clavier</p>
+      <p class="hint" id="sitOs">On a deviné Windows. Tape pour changer.</p>
+      <p class="eyebrow spaced" id="osEyebrow">Ton clavier</p>
+      <div class="row-3" id="oses">
+        <button type="button" class="chip" data-os="win" id="osWin" aria-pressed="true">Windows</button>
+        <button type="button" class="chip" data-os="mac" id="osMac" aria-pressed="false">Mac</button>
+        <button type="button" class="chip" data-os="linux" id="osLinux" aria-pressed="false">Linux</button>
+      </div>
+      <p class="hint" id="osHint">On a deviné. Change si ce n’est pas le bon — Ctrl ou Cmd, ce n’est pas la même touche.</p>
+      <p class="eyebrow spaced" id="handsEyebrow">Si on s’est trompés, tape ici.</p>
+      <div class="row-2 hands-row" id="handsPick">
+        <button type="button" class="chip" data-hands="touch" id="handsTouch" aria-pressed="false">Entraîner au doigt</button>
+        <button type="button" class="chip" data-hands="keyboard" id="handsKeyboard" aria-pressed="true">Vrai clavier</button>
+      </div>
+      <p class="hands-chip" id="handsChip">Clavier réel — appuie dessus</p>
     </div>
-    <p class="hint" id="ageHint">Les missions sont les mêmes de 10 à 15 ans. On parle comme à 12 ans.</p>
-    <p class="eyebrow spaced" id="osEyebrow">Ton clavier</p>
-    <div class="row-3" id="oses">
-      <button type="button" class="chip" data-os="win" id="osWin" aria-pressed="true">Windows</button>
-      <button type="button" class="chip" data-os="mac" id="osMac" aria-pressed="false">Mac</button>
-      <button type="button" class="chip" data-os="linux" id="osLinux" aria-pressed="false">Linux</button>
-    </div>
-    <p class="hint" id="osHint">On a deviné. Change si ce n’est pas le bon — Ctrl ou Cmd, ce n’est pas la même touche.</p>
     <button type="button" class="play-btn" id="toMap">C’EST PARTI</button>
   </section>
 
@@ -136,6 +136,7 @@
     <div class="hud hide" id="hud">
       <div class="hud-box"><div class="hud-label" id="lblTime">Temps</div><div class="hud-val time" id="time">90</div></div>
     </div>
+    <p class="hands-chip live" id="playHandsChip">Clavier réel — appuie dessus</p>
     <div class="question" id="qcard">
       <div class="q-tag" id="qtag">Défi 1 / 4</div>
       <div class="q-text" id="qtext"></div>

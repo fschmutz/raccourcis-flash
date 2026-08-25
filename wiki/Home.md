@@ -17,7 +17,7 @@ Rien n’est envoyé. · Nothing is uploaded.
 
 ### Français
 
-Borne d’arcade dans l’onglet. Prénom + âge (10–15), Windows / Mac / Linux. Une campagne linéaire : tu ne sautes pas les missions. Quatre défis piochés au hasard, un feu d’artifice, une étoile. Le boss mélange tout.
+Borne d’arcade dans l’onglet. Prénom Paloma, Windows / Mac / Linux, téléphone ou vrai clavier (on détecte). Une campagne linéaire : tu ne sautes pas les missions. Quatre défis piochés au hasard, un feu d’artifice, une étoile. Le boss mélange tout.
 
 Les records restent sur l’appareil. Pas de compte, pas de pub.
 
@@ -25,7 +25,7 @@ Les records restent sur l’appareil. Pas de compte, pas de pub.
 
 ### English
 
-An arcade cabinet in the tab. First name + age (10–15), Windows / Mac / Linux. A linear campaign: you cannot skip ahead. Four shuffled challenges, fireworks, a star. The boss mixes everything.
+An arcade cabinet in the tab. First name Paloma, Windows / Mac / Linux, phone or real keyboard (we detect). A linear campaign: you cannot skip ahead. Four shuffled challenges, fireworks, a star. The boss mixes everything.
 
 Progress stays on the device. No account, no ads.
 

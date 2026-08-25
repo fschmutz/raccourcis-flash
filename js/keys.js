@@ -238,3 +238,29 @@ export function eventFromChord(comboId, os, extra = {}) {
     ...extra
   };
 }
+
+
+/**
+ * Detect how the gamer will play.
+ * touch if: maxTouchPoints > 0 AND (coarse pointer OR no keyboard seen yet on a narrow viewport < 800)
+ * Otherwise keyboard.
+ */
+export function detectHands(info = {}) {
+  const maxTouch = Number(info.maxTouchPoints) || 0;
+  const coarse = info.pointerCoarse === true;
+  const keyboardSeen = info.keyboardSeen === true;
+  const width = Number(info.viewportWidth);
+  const viewport = Number.isFinite(width) ? width : 1024;
+  if (maxTouch > 0 && (coarse || (!keyboardSeen && viewport < 800))) return 'touch';
+  return 'keyboard';
+}
+
+export function isRealKeyboardEvent(eventLike) {
+  if (!eventLike || eventLike.repeat) return false;
+  const tag = String(eventLike.targetTag || eventLike.target?.tagName || '').toUpperCase();
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return false;
+  if (eventLike.isComposing) return false;
+  const key = eventLike.key;
+  if (key == null || key === '') return false;
+  return true;
+}

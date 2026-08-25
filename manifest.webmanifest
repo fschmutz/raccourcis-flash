@@ -1,7 +1,7 @@
 {
   "name": "Raccourcis Flash",
   "short_name": "Raccourcis",
-  "description": "One quest. Keyboard shortcuts for ages 10–15. Nothing is uploaded.",
+  "description": "One quest. Keyboard shortcuts, explained like you are 12. Nothing is uploaded.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -4,7 +4,7 @@ import { createFX } from './fx.js';
 import { MISSIONS, missionById } from './missions.js';
 import { generateMissionChallenges, generateBossGauntlet } from './challenges.js';
 import {
-  detectOS, fillOs, matchKeydown, MOD
+  detectOS, fillOs, matchKeydown, MOD, detectHands, isRealKeyboardEvent
 } from './keys.js';
 
 const $ = (id) => document.getElementById(id);
@@ -13,7 +13,10 @@ const BOSS_SECS = 90;
 
 let lang = 'fr';
 let os = 'win';
-let player = { name: 'Paloma', age: 12 };
+let hands = 'keyboard';
+let keyboardSeen = false;
+let handsForced = false;
+let player = { name: 'Paloma' };
 let beaten = {}; // missionId -> stars 1..3
 let bossClear = false;
 let lastCopy = null;
@@ -30,25 +33,46 @@ function detectLang() {
   return 'fr';
 }
 
+function pointerIsCoarse() {
+  try {
+    return !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  } catch {
+    return false;
+  }
+}
+
+function detectHandsNow() {
+  return detectHands({
+    maxTouchPoints: navigator.maxTouchPoints || 0,
+    pointerCoarse: pointerIsCoarse(),
+    keyboardSeen,
+    viewportWidth: window.innerWidth || 1024
+  });
+}
+
 function loadPersisted() {
   try {
     const s = JSON.parse(localStorage.getItem(LS) || 'null');
     if (!s || typeof s !== 'object') return;
     if (typeof s.name === 'string' && s.name.trim()) player.name = s.name.trim().slice(0, 14);
-    const age = +s.age;
-    if (age >= 10 && age <= 15) player.age = age;
     if (s.os === 'win' || s.os === 'mac' || s.os === 'linux') os = s.os;
     if (s.lang === 'en' || s.lang === 'fr') lang = s.lang;
     if (s.beaten && typeof s.beaten === 'object') beaten = s.beaten;
     bossClear = !!s.boss;
     if (typeof s.lastCopy === 'string') lastCopy = s.lastCopy;
+    keyboardSeen = !!s.keyboardSeen;
+    handsForced = !!s.handsForced;
+    if (s.hands === 'touch' || s.hands === 'keyboard') {
+      if (handsForced) hands = s.hands;
+    }
   } catch { /* keep defaults */ }
 }
 
 function save() {
   try {
     localStorage.setItem(LS, JSON.stringify({
-      name: player.name, age: player.age, os, lang, beaten, boss: bossClear, lastCopy
+      name: player.name, os, lang, hands, handsForced, keyboardSeen,
+      beaten, boss: bossClear, lastCopy
     }));
   } catch { /* quota */ }
 }
@@ -101,6 +125,25 @@ function show(id) {
   ['who', 'map', 'brief', 'play', 'win'].forEach((p) => $(p).classList.toggle('hide', p !== id));
 }
 
+function osLabel() {
+  const T = S();
+  if (os === 'mac') return T.osMac;
+  if (os === 'linux') return T.osLinux;
+  return T.osWin;
+}
+
+function paintHands() {
+  const T = S();
+  const chip = hands === 'touch' ? T.handsChipTouch : T.handsChipKeyboard;
+  if ($('handsChip')) $('handsChip').textContent = chip;
+  if ($('playHandsChip')) $('playHandsChip').textContent = chip;
+  if ($('handsTouch')) $('handsTouch').setAttribute('aria-pressed', String(hands === 'touch'));
+  if ($('handsKeyboard')) $('handsKeyboard').setAttribute('aria-pressed', String(hands === 'keyboard'));
+  if ($('sitTitle')) $('sitTitle').textContent = hands === 'touch' ? T.sitPhone : T.sitComputer;
+  if ($('sitOs')) $('sitOs').textContent = T.sitOsGuess(osLabel());
+  if ($('handsEyebrow')) $('handsEyebrow').textContent = T.sitHandsHint;
+}
+
 function applyI18n() {
   const T = S();
   document.documentElement.lang = T.htmlLang;
@@ -120,13 +163,13 @@ function applyI18n() {
   $('tagline').textContent = T.tagline(player.name);
   $('whoEyebrow').textContent = T.whoEyebrow;
   $('pname').placeholder = T.namePh;
-  $('ageEyebrow').textContent = T.ageEyebrow;
-  $('ageHint').textContent = T.ageHint;
   $('osEyebrow').textContent = T.osEyebrow;
   $('osHint').textContent = T.osHint;
   $('osWin').textContent = T.osWin;
   $('osMac').textContent = T.osMac;
   $('osLinux').textContent = T.osLinux;
+  $('handsTouch').textContent = T.handsTouch;
+  $('handsKeyboard').textContent = T.handsKeyboard;
   $('toMap').textContent = T.go;
   $('mapEyebrow').textContent = T.mapEyebrow;
   $('changePlayer').textContent = T.changePlayer;
@@ -144,16 +187,11 @@ function applyI18n() {
   $('verLabel').textContent = T.version;
   $('reloadLatest').textContent = T.reload;
   $('privacyLine').textContent = T.privacy;
-  paintAges();
   paintOs();
+  paintHands();
   if (!$('map').classList.contains('hide')) paintMap();
 }
 
-function paintAges() {
-  [...$('ages').children].forEach((c) => {
-    c.setAttribute('aria-pressed', String(+c.dataset.age === player.age));
-  });
-}
 function paintOs() {
   [...$('oses').children].forEach((c) => {
     c.setAttribute('aria-pressed', String(c.dataset.os === os));
@@ -169,8 +207,17 @@ function setLang(next) {
 
 function restorePlayerUI() {
   $('pname').value = player.name;
-  paintAges();
   paintOs();
+  paintHands();
+}
+
+function setHands(next, forced) {
+  hands = next === 'touch' ? 'touch' : 'keyboard';
+  if (forced) handsForced = true;
+  if (hands === 'keyboard') keyboardSeen = true;
+  save();
+  paintHands();
+  if (state.running) paintChallenge();
 }
 
 /* ---------- map ---------- */
@@ -203,12 +250,19 @@ function paintMap() {
   });
 }
 
+function briefBody(m) {
+  const raw = m.blurb[lang] || m.blurb.fr;
+  const body = fillOs(raw, os).trim();
+  const doLine = hands === 'touch' ? S().briefDoTouch : S().briefDoKeyboard;
+  return body + ' ' + doLine;
+}
+
 function openBrief(id) {
   const m = missionById(id);
   if (!m || !isUnlocked(id)) return;
   state.missionId = id;
   $('briefTitle').textContent = fillOs(m.title[lang] || m.title.fr, os);
-  $('briefBlurb').textContent = fillOs(m.blurb[lang] || m.blurb.fr, os);
+  $('briefBlurb').textContent = briefBody(m);
   $('briefTag').textContent = m.isBoss ? S().bossTitle : ('Mission ' + m.index);
   show('brief');
 }
@@ -229,6 +283,10 @@ const state = {
 
 function current() { return state.queue[state.i] || null; }
 
+function genOpts() {
+  return { os, lang, name: player.name, now: Date.now(), lastCopy, hands };
+}
+
 function begin(id) {
   const m = missionById(id);
   if (!m) return;
@@ -241,12 +299,12 @@ function begin(id) {
   state.running = true;
   state.picked = new Set();
   if (m.isBoss) {
-    state.queue = generateBossGauntlet({ os, lang, name: player.name, now: Date.now(), lastCopy });
+    state.queue = generateBossGauntlet(genOpts());
     state.left = BOSS_SECS;
     $('hud').classList.remove('hide');
     startTimer();
   } else {
-    state.queue = generateMissionChallenges(id, { os, lang, name: player.name, now: Date.now(), lastCopy });
+    state.queue = generateMissionChallenges(id, genOpts());
     $('hud').classList.add('hide');
     stopTimer();
   }
@@ -282,6 +340,7 @@ function paintChallenge() {
   state.resolved = false;
   state.tries = 0;
   state.picked = new Set();
+  paintHands();
   $('qtag').textContent = T.challengeOf(state.i + 1, state.queue.length);
   $('qtext').textContent = ch.prompt;
   $('feedback').textContent = '';
@@ -342,23 +401,15 @@ function paintMouse(ch) {
   $('dragStar').classList.remove('home');
 }
 
-/* ---------- on-screen keyboard ---------- */
-const ROWS = [
-  [
-    { id: 'esc', lab: 'Esc', wide: 's' },
-    { id: '1', lab: '1' }, { id: '2', lab: '2' }, { id: '3', lab: '3' }, { id: '4', lab: '4' },
-    { id: '0', lab: '0' }, { id: '-', lab: '−' }, { id: '=', lab: '+' }
-  ],
-  [
-    { id: 'tab', lab: 'Tab', wide: 'm' },
-    { id: 'q', lab: 'Q' }, { id: 'w', lab: 'W' }, { id: 'e', lab: 'E' }, { id: 'r', lab: 'R' },
-    { id: 't', lab: 'T' }, { id: 'y', lab: 'Y' }, { id: 'a', lab: 'A' }, { id: 's', lab: 'S' }
-  ],
-  [
-    { id: 'f', lab: 'F' }, { id: 'z', lab: 'Z' }, { id: 'x', lab: 'X' }, { id: 'c', lab: 'C' },
-    { id: 'v', lab: 'V' }, { id: 'l', lab: 'L' }, { id: 'p', lab: 'P' }
-  ]
-];
+/* ---------- on-screen keyboard: only this challenge's keys + modifiers ---------- */
+const KEY_LAB = {
+  esc: 'Esc', tab: 'Tab',
+  '1': '1', '2': '2', '3': '3', '4': '4', '0': '0', '-': '−', '=': '+', '+': '+',
+  q: 'Q', w: 'W', e: 'E', r: 'R', t: 'T', y: 'Y', a: 'A', s: 'S',
+  f: 'F', z: 'Z', x: 'X', c: 'C', v: 'V', l: 'L', p: 'P',
+  printscreen: 'PrtSc'
+};
+const MOD_IDS = new Set(['ctrl', 'cmd', 'win', 'super', 'alt', 'option', 'shift']);
 
 function modKeys() {
   const m = MOD[os] || MOD.win;
@@ -374,13 +425,14 @@ function paintKeyboard(lit, pickable) {
   const kb = $('kb');
   kb.replaceChildren();
   const want = new Set(lit || []);
-  function addKey(info) {
+
+  function addKey(info, row) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'k' + (info.wide ? ' w-' + info.wide : '');
     b.dataset.k = info.id;
     b.textContent = info.lab;
-    if (want.has(info.id) && !pickable) b.classList.add('lit');
+    if (want.has(info.id)) b.classList.add('lit');
     if (pickable && state.picked.has(info.id)) b.classList.add('picked');
     if (pickable) {
       b.addEventListener('click', () => {
@@ -390,52 +442,23 @@ function paintKeyboard(lit, pickable) {
         paintKeyboard(lit, true);
       });
     }
-    kb.appendChild(b);
+    row.appendChild(b);
   }
+
   const mods = document.createElement('div');
   mods.className = 'kb-row mods';
   kb.appendChild(mods);
-  modKeys().forEach((info) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'k w-m';
-    b.dataset.k = info.id;
-    b.textContent = info.lab;
-    if (want.has(info.id) && !pickable) b.classList.add('lit');
-    if (pickable && state.picked.has(info.id)) b.classList.add('picked');
-    if (pickable) {
-      b.addEventListener('click', () => {
-        if (state.resolved) return;
-        if (state.picked.has(info.id)) state.picked.delete(info.id);
-        else state.picked.add(info.id);
-        paintKeyboard(lit, true);
-      });
-    }
-    mods.appendChild(b);
-  });
-  ROWS.forEach((row) => {
+  modKeys().forEach((info) => addKey({ ...info, wide: 'm' }, mods));
+
+  const extras = [...want].filter((id) => !MOD_IDS.has(id));
+  if (extras.length) {
     const r = document.createElement('div');
     r.className = 'kb-row';
     kb.appendChild(r);
-    row.forEach((info) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'k' + (info.wide ? ' w-' + info.wide : '');
-      b.dataset.k = info.id;
-      b.textContent = info.lab;
-      if (want.has(info.id) && !pickable) b.classList.add('lit');
-      if (pickable && state.picked.has(info.id)) b.classList.add('picked');
-      if (pickable) {
-        b.addEventListener('click', () => {
-          if (state.resolved) return;
-          if (state.picked.has(info.id)) state.picked.delete(info.id);
-          else state.picked.add(info.id);
-          paintKeyboard(lit, true);
-        });
-      }
-      r.appendChild(b);
+    extras.forEach((id) => {
+      addKey({ id, lab: KEY_LAB[id] || String(id).toUpperCase() }, r);
     });
-  });
+  }
 }
 
 function keysMatch(want) {
@@ -462,13 +485,13 @@ function grade(ok, reveal) {
   sBad();
   $('qcard').classList.remove('good');
   $('qcard').classList.add('bad');
-  if (state.tries >= 2 && reveal != null) {
+  if (state.tries >= 2) {
     state.resolved = true;
-    $('feedback').textContent = T.reveal(String(reveal));
+    $('feedback').textContent = T.revealDone(String(reveal));
     $('feedback').className = 'feedback ko';
-    setTimeout(advance, 1400);
+    setTimeout(advance, 1100);
   } else {
-    $('feedback').textContent = T.almost;
+    $('feedback').textContent = reveal != null ? T.reveal(String(reveal)) : T.almost;
     $('feedback').className = 'feedback ko';
   }
 }
@@ -545,6 +568,15 @@ function failBoss() {
 
 /* ---------- real keyboard ---------- */
 document.addEventListener('keydown', (e) => {
+  const tag = (e.target && e.target.tagName) || '';
+  if (isRealKeyboardEvent({ key: e.key, repeat: e.repeat, isComposing: e.isComposing, targetTag: tag })) {
+    if (!keyboardSeen || hands !== 'keyboard') {
+      keyboardSeen = true;
+      hands = 'keyboard';
+      save();
+      paintHands();
+    }
+  }
   if (!state.running || state.resolved) return;
   const ch = current();
   if (!ch || ch.type !== 'press' || !ch.comboId) return;
@@ -629,18 +661,17 @@ $('keysClear').addEventListener('click', () => {
 });
 
 /* ---------- chrome ---------- */
-$('ages').addEventListener('click', (e) => {
-  const b = e.target.closest('.chip'); if (!b) return;
-  player.age = +b.dataset.age;
-  paintAges();
-  save();
-});
 $('oses').addEventListener('click', (e) => {
   const b = e.target.closest('.chip'); if (!b) return;
   os = b.dataset.os;
   paintOs();
+  paintHands();
   save();
   applyI18n();
+});
+$('handsPick').addEventListener('click', (e) => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  setHands(b.dataset.hands, true);
 });
 $('toMap').addEventListener('click', () => {
   const n = $('pname').value.trim();
@@ -650,7 +681,7 @@ $('toMap').addEventListener('click', () => {
   paintMap();
   show('map');
 });
-$('pname').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('toMap').click(); });
+$('pname').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); $('toMap').click(); } });
 $('changePlayer').addEventListener('click', () => show('who'));
 $('resetQuest').addEventListener('click', () => {
   if (!confirm(S().resetAsk)) return;
@@ -700,6 +731,7 @@ $('verNum').textContent = APP_VERSION;
 os = detectOS(navigator.userAgent || '', navigator.platform || '');
 lang = detectLang();
 loadPersisted();
+if (!handsForced) hands = detectHandsNow();
 restorePlayerUI();
 applyI18n();
 show('who');

@@ -1,6 +1,6 @@
 # FAQ
 
-**C’est pour l’école ? / For school?** Arcade familiale, 10–15 ans. Pas un programme, pas une note. / A family arcade, ages 10–15. Not a curriculum.
+**C’est pour l’école ? / For school?** Arcade familiale, expliquée comme à 12 ans. Pas un programme, pas une note. / A family arcade, explained like you are 12. Not a curriculum.
 
 **Pourquoi Paloma ? / Why Paloma?** Prénom par défaut. Change-le ; le dernier joueur reste sur cet appareil. / Default first name. Change it; the last player is remembered on this device.
 
@@ -10,4 +10,4 @@
 
 **FR / EN ?** Français par défaut. Si le navigateur est en anglais, on bascule. Bouton dans le bandeau. / French default. English if `navigator.language` starts with `en`. Toggle in the marquee.
 
-**Ctrl ou Cmd ?** On détecte Windows / Mac / Linux. Tu peux corriger. / We detect Windows / Mac / Linux. You can override.
+**Ctrl ou Cmd ?** On détecte Windows / Mac / Linux, et téléphone ou vrai clavier. Tu peux corriger. / We detect Windows / Mac / Linux, and phone vs real keyboard. You can override.

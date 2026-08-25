@@ -1,12 +1,15 @@
 /** Challenge generators. Browser + Node. No DOM. */
 
 import { MISSIONS, allFacts, factsFor, regularMissions } from './missions.js';
-import { formatCombo, fillOs, isOsEaten, highlightKeys, COMBOS } from './keys.js';
+import { formatCombo, fillOs, isOsEaten, highlightKeys, COMBOS, displayKey, MOD } from './keys.js';
 
 export const COPY_WORDS = {
   fr: ['banane', 'dragon', 'fusée', 'chat', 'pizza', 'étoile', 'robot', 'nuage', 'cactus', 'licorne', 'volcan', 'komodo'],
   en: ['banana', 'dragon', 'rocket', 'cat', 'pizza', 'star', 'robot', 'cloud', 'cactus', 'unicorn', 'volcano', 'komodo']
 };
+
+export const TOUCH_TYPES = ['keys', 'what', 'tf', 'mouse'];
+export const KEYBOARD_TYPES = ['keys', 'what', 'tf', 'mouse', 'press'];
 
 export function mulberry32(seed) {
   let a = seed >>> 0;
@@ -69,15 +72,34 @@ function canKeys(fact) {
   return !!(fact.comboId && COMBOS[fact.comboId]);
 }
 
-export function allowedTypes(fact) {
+export function normalizeHands(hands) {
+  return hands === 'touch' ? 'touch' : 'keyboard';
+}
+
+/**
+ * Touch never gets `press` (impossible without a real keyboard).
+ * Touch: keys / what / tf / mouse.
+ * Keyboard: those plus press.
+ */
+export function allowedTypes(fact, hands = 'keyboard') {
+  const mode = normalizeHands(hands);
   const types = ['what', 'tf'];
   if (canKeys(fact)) types.push('keys');
-  if (canPress(fact)) types.push(fact.mouse ? 'mouse' : 'press');
+  if (canPress(fact)) {
+    if (fact.mouse) types.push('mouse');
+    else if (mode !== 'touch') types.push('press');
+  }
   return types;
 }
 
 function doesText(fact, os, lang) {
   return fillOs(loc(fact.does, lang), os);
+}
+
+function firstSentence(text) {
+  const s = String(text || '').trim();
+  const cut = s.match(/^(.+?[.!?])(\s|$)/);
+  return cut ? cut[1] : s;
 }
 
 export function decoysFor(fact, os, lang, rng, n = 3) {
@@ -105,19 +127,41 @@ export function decoysFor(fact, os, lang, rng, n = 3) {
 function promptWhat(fact, os, lang) {
   if (fact.comboId) {
     const combo = formatCombo(fact.comboId, os);
-    return lang === 'en'
-      ? `What does ${combo} do?`
-      : `Que fait ${combo} ?`;
+    return lang === 'en' ? `${combo} — what does that do?` : `${combo}, ça fait quoi ?`;
   }
-  if (fact.mouse === 'dblclick') return lang === 'en' ? 'What does a double-click do?' : 'Que fait un double-clic ?';
-  if (fact.mouse === 'contextmenu') return lang === 'en' ? 'What does a right-click do?' : 'Que fait un clic droit ?';
-  if (fact.mouse === 'drag') return lang === 'en' ? 'What does a drag do?' : 'Que fait un glisser ?';
+  if (fact.mouse === 'dblclick') return lang === 'en' ? 'A double-click — what does that do?' : 'Un double-clic, ça fait quoi ?';
+  if (fact.mouse === 'contextmenu') return lang === 'en' ? 'A right-click — what does that do?' : 'Un clic droit, ça fait quoi ?';
+  if (fact.mouse === 'drag') return lang === 'en' ? 'A drag — what does that do?' : 'Glisser, ça fait quoi ?';
   return lang === 'en' ? 'What is the right move?' : 'C’est quoi le bon geste ?';
+}
+
+function holdThenTap(fact, os, lang) {
+  const ids = fact.comboId ? highlightKeys(fact.comboId, os) : [];
+  const modIds = new Set(['ctrl', 'cmd', 'win', 'super', 'alt', 'option', 'shift']);
+  const mods = ids.filter((k) => modIds.has(k));
+  const letter = ids.find((k) => !modIds.has(k));
+  const labels = {
+    ctrl: 'Ctrl', cmd: 'Cmd', win: 'Win', super: 'Super',
+    alt: 'Alt', option: 'Option', shift: 'Shift'
+  };
+  const modNames = mods.map((k) => labels[k] || k);
+  const letterLab = letter ? displayKey(letter) : '';
+  const primary = modNames[0] || (MOD[os] || MOD.win).mod;
+  const hint = primary === 'Cmd'
+    ? (lang === 'en' ? ' (or Ctrl on a PC)' : ' (ou Ctrl sur un PC)')
+    : primary === 'Ctrl'
+      ? (lang === 'en' ? ' (or Cmd on a Mac)' : ' (ou Cmd)')
+      : '';
+  const hold = modNames.length > 1
+    ? (lang === 'en' ? `Hold ${modNames.join(' + ')}` : `Tiens ${modNames.join(' + ')}`)
+    : (lang === 'en' ? `Hold ${primary}${hint}` : `Tiens ${primary}${hint}`);
+  if (!letterLab) return hold + '.';
+  return lang === 'en' ? `${hold}, then tap ${letterLab}.` : `${hold}, puis tape ${letterLab}.`;
 }
 
 function promptPress(fact, os, lang, copyWord) {
   if (fact.mouse === 'dblclick') {
-    return lang === 'en' ? 'Double-click the target.' : 'Double-clique la cible.';
+    return lang === 'en' ? 'Double-click the target. That grabs a word.' : 'Double-clique la cible. Ça prend un mot.';
   }
   if (fact.mouse === 'contextmenu') {
     return lang === 'en' ? 'Right-click the target (the other button).' : 'Clic droit sur la cible (l’autre bouton).';
@@ -125,20 +169,21 @@ function promptPress(fact, os, lang, copyWord) {
   if (fact.mouse === 'drag') {
     return lang === 'en' ? 'Drag the star onto the pad.' : 'Glisse l’étoile jusqu’au tapis.';
   }
-  const combo = fact.comboId ? formatCombo(fact.comboId, os) : '';
+  const hold = holdThenTap(fact, os, lang);
+  const punch = firstSentence(doesText(fact, os, lang));
   if (fact.copyWord && copyWord) {
     return lang === 'en'
-      ? `Copy the word ${copyWord.toUpperCase()} — press ${combo}.`
-      : `Copie le mot ${copyWord.toUpperCase()} — appuie sur ${combo}.`;
+      ? `${hold} That COPIES the word ${copyWord.toUpperCase()}.`
+      : `${hold} Ça COPIE le mot ${copyWord.toUpperCase()}.`;
   }
-  return lang === 'en' ? `Press ${combo}.` : `Appuie sur ${combo}.`;
+  return `${hold} ${punch}`;
 }
 
 function promptKeys(fact, os, lang) {
-  const does = doesText(fact, os, lang);
+  const punch = firstSentence(doesText(fact, os, lang));
   return lang === 'en'
-    ? `Which keys? ${does}`
-    : `Quelles touches ? ${does}`;
+    ? `Tap the glowing keys, then OK. ${punch}`
+    : `Tape les touches allumées, puis OK. ${punch}`;
 }
 
 function buildWhat(fact, os, lang, rng) {
@@ -198,40 +243,58 @@ function buildPress(fact, os, lang, copyWord) {
   };
 }
 
-export function buildChallenge(fact, type, { os, lang, rng, lastCopy }) {
-  const t = type || pick(allowedTypes(fact), rng);
+export function buildChallenge(fact, type, { os, lang, rng, lastCopy, hands } = {}) {
+  const mode = normalizeHands(hands);
+  const allowed = allowedTypes(fact, mode);
+  let t = type || pick(allowed, rng);
+  if (t === 'press' && mode === 'touch') t = allowed.includes('keys') ? 'keys' : allowed[0];
+  if (!allowed.includes(t)) t = allowed.includes('what') ? 'what' : allowed[0];
   if (t === 'what') return buildWhat(fact, os, lang, rng);
   if (t === 'tf') return buildTf(fact, os, lang, rng);
   if (t === 'keys' && canKeys(fact)) return buildKeys(fact, os, lang);
   if ((t === 'press' || t === 'mouse') && canPress(fact)) {
+    if (t === 'press' && mode === 'touch') return buildWhat(fact, os, lang, rng);
     const word = fact.copyWord ? pickCopyWord(rng, lang, lastCopy) : null;
     return buildPress(fact, os, lang, word);
   }
   return buildWhat(fact, os, lang, rng);
 }
 
+function typeCycleFor(hands, rng) {
+  if (normalizeHands(hands) === 'touch') return shuffle(['what', 'tf', 'keys', 'mouse'], rng);
+  return shuffle(['what', 'tf', 'keys', 'press'], rng);
+}
+
+function resolveType(fact, wanted, hands) {
+  const allowed = allowedTypes(fact, hands);
+  let type = wanted;
+  if (!allowed.includes(type)) {
+    if (type === 'press' && allowed.includes('mouse')) type = 'mouse';
+    else if (type === 'press' && allowed.includes('keys')) type = 'keys';
+    else type = allowed.includes('what') ? 'what' : allowed[0];
+  }
+  return type;
+}
+
 /**
  * 4 challenges from a mission pool. Types shuffled.
  * `lastCopy` avoids the same copy-word sentence twice in a row.
+ * `hands` = 'touch' | 'keyboard' — touch never emits press.
  */
 export function generateMissionChallenges(missionId, opts = {}) {
   const os = opts.os || 'win';
   const lang = opts.lang === 'en' ? 'en' : 'fr';
+  const hands = normalizeHands(opts.hands);
   const rng = opts.rng || mulberry32(seedFrom(opts.name, opts.now));
   const facts = factsFor(missionId);
   if (facts.length < 4) throw new Error('mission ' + missionId + ' needs ≥4 templates');
   const picked = shuffle(facts, rng).slice(0, 4);
-  const typeCycle = shuffle(['what', 'tf', 'keys', 'press'], rng);
+  const typeCycle = typeCycleFor(hands, rng);
   let lastCopy = opts.lastCopy || null;
   const out = [];
   picked.forEach((fact, i) => {
-    const allowed = allowedTypes(fact);
-    let type = typeCycle[i % typeCycle.length];
-    if (!allowed.includes(type)) {
-      if (type === 'press' && allowed.includes('mouse')) type = 'mouse';
-      else type = allowed.includes('what') ? 'what' : allowed[0];
-    }
-    const ch = buildChallenge(fact, type, { os, lang, rng, lastCopy });
+    const type = resolveType(fact, typeCycle[i % typeCycle.length], hands);
+    const ch = buildChallenge(fact, type, { os, lang, rng, lastCopy, hands });
     if (ch.copyWord) lastCopy = ch.copyWord;
     out.push(ch);
   });
@@ -242,20 +305,16 @@ export function generateMissionChallenges(missionId, opts = {}) {
 export function generateBossGauntlet(opts = {}) {
   const os = opts.os || 'win';
   const lang = opts.lang === 'en' ? 'en' : 'fr';
+  const hands = normalizeHands(opts.hands);
   const now = opts.now ?? Date.now();
   const rng = opts.rng || mulberry32(seedFrom(opts.name, now));
   const pool = allFacts();
   const picked = shuffle(pool, rng).slice(0, 10);
-  const typeCycle = shuffle(['what', 'tf', 'keys', 'press'], rng);
+  const typeCycle = typeCycleFor(hands, rng);
   let lastCopy = opts.lastCopy || null;
   return picked.map((fact, i) => {
-    const allowed = allowedTypes(fact);
-    let type = typeCycle[i % typeCycle.length];
-    if (!allowed.includes(type)) {
-      if (type === 'press' && allowed.includes('mouse')) type = 'mouse';
-      else type = allowed.includes('what') ? 'what' : allowed[0];
-    }
-    const ch = buildChallenge(fact, type, { os, lang, rng, lastCopy });
+    const type = resolveType(fact, typeCycle[i % typeCycle.length], hands);
+    const ch = buildChallenge(fact, type, { os, lang, rng, lastCopy, hands });
     if (ch.copyWord) lastCopy = ch.copyWord;
     return ch;
   });

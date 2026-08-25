@@ -2,7 +2,7 @@
 
 ### La page a l’air vieille / The live page looks old
 
-**Recharger la dernière version** dans le pied de page (ou un hard-refresh). Ça vire le service worker `racc-v1`.
+**Recharger la dernière version** dans le pied de page (ou un hard-refresh). Ça vire le service worker `racc-v2`.
 
 ### Pas de son sur iPad / No sound on iPad
 
@@ -19,3 +19,9 @@ L’ordi vole ces touches. On les garde en quiz. On ne peut pas les « écouter 
 ### La progression a disparu / Progress vanished
 
 Elle est dans `localStorage` (`shortcut-flash`). Fenêtre privée, autre navigateur, ou vidage du site = zéro. Rien n’est sur un serveur.
+
+### Téléphone / Phone
+
+Sur un téléphone on n’écoute pas le vrai clavier (`press` impossible). Tape les touches allumées, puis OK. Si on s’est trompés, sur l’écran d’accueil : **Entraîner au doigt** ou **Vrai clavier**.
+
+On a phone we do not listen for a real keyboard (`press` is impossible). Tap the glowing keys, then OK. If we guessed wrong, on the who screen: **Train with a finger** or **Real keyboard**.

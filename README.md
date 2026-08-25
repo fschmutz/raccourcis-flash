@@ -10,7 +10,7 @@
 [![Privacy](https://img.shields.io/badge/privacy-nothing_uploaded-0D0624?style=for-the-badge)](https://github.com/fschmutz/shortcut-flash/wiki/Privacy)
 [![Wiki](https://img.shields.io/badge/wiki-how_it_works-C8FF2E?style=for-the-badge)](https://github.com/fschmutz/shortcut-flash/wiki)
 
-<img src="assets/hero.png" alt="Raccourcis Flash — prénom Paloma, âge 12, clavier, C'EST PARTI" width="920">
+<img src="assets/hero.png" alt="Raccourcis Flash — prénom Paloma, situation téléphone ou clavier, C'EST PARTI" width="920">
 
 <img src="assets/mascot.png" alt="Raccourcis Flash — keycap hero with a cape" width="360">
 
@@ -19,9 +19,9 @@
 
 </div>
 
-Borne d’arcade. Prénom Paloma + âge 10–15, Windows / Mac / Linux (on détecte, tu corriges). Campagne linéaire, quatre défis mélangés, un boss chronométré. Ctrl ou Cmd, Alt ou Option, Win ou Cmd — les bonnes touches. Rien n’est envoyé.
+Borne d’arcade. Prénom Paloma, Windows / Mac / Linux, téléphone ou vrai clavier (on détecte, tu corriges). Campagne linéaire, quatre défis mélangés, un boss chronométré. Sur téléphone tu tapes les touches à l’écran. Rien n’est envoyé.
 
-Arcade cabinet. First name Paloma + age 10–15, Windows / Mac / Linux (we detect, you override). Linear campaign, four shuffled challenges, a timed boss. Ctrl or Cmd, Alt or Option, Win or Cmd — the right keys. Nothing is uploaded.
+Arcade cabinet. First name Paloma, Windows / Mac / Linux, phone or real keyboard (we detect, you override). Linear campaign, four shuffled challenges, a timed boss. On a phone you tap the keys on the screen. Nothing is uploaded.
 
 Le français est la langue par défaut (et si `navigator.language` commence par `fr`). L’anglais s’allume si le navigateur est en `en`, et c’est un bouton. Seuls la langue, le joueur, l’OS et les missions battues vont dans `localStorage`.
 

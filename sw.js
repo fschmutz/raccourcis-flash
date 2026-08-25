@@ -1,4 +1,4 @@
-const CACHE = 'racc-v1';
+const CACHE = 'racc-v2';
 const SHELL = [
   './',
   './index.html',

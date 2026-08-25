@@ -8,10 +8,10 @@ css/              borne arcade (indigo / lime / banana)
 js/app.js         campagne, clavier, localStorage
 js/missions.js    12 missions + pools
 js/challenges.js  générateurs (node --test)
-js/keys.js        cartes OS + matcher keydown
+js/keys.js        cartes OS + matcher keydown + detectHands
 js/fx.js          feu d’artifice
 js/i18n.js        FR / EN (chrome)
-sw.js             cache racc-v1
+sw.js             cache racc-v2
 wiki/             source → wiki GitHub via scripts/wiki-sync.sh
 test/             node --test
 ```

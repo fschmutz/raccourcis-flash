@@ -10,7 +10,7 @@
 
 Une quête linéaire. Mission 2 reste fermée tant que la 1 n’est pas clear. Chaque mission : un texte comme tu as 12 ans, puis 4 défis piochés dans un plus grand tas.
 
-**Types de défis.** (a) Appuie sur le vrai combo (keydown, les répétitions sont ignorées). (b) « Que fait ce combo ? » — 4 réponses. (c) « Quelles touches ? » — tu les choisis sur le clavier dessiné. (d) Vrai / faux. Les leurres viennent des autres missions. Les phrases de copie changent (jamais le même mot deux fois de suite).
+**Types de défis.** (a) Appuie sur le vrai combo (keydown, les répétitions sont ignorées) — jamais sur téléphone : là tu tapes les touches allumées. (b) « Que fait ce combo ? » — 4 réponses. (c) « Quelles touches ? » — tu les choisis sur le clavier dessiné. (d) Vrai / faux. Les leurres viennent des autres missions. Les phrases de copie changent (jamais le même mot deux fois de suite).
 
 **Captures et verrou.** On ne te demande pas d’appuyer : l’ordi vole Win+Shift+S, Cmd+Shift+4, Win+L, Cmd+Ctrl+Q. Ces-là restent des questions.
 
@@ -20,13 +20,13 @@ Une quête linéaire. Mission 2 reste fermée tant que la 1 n’est pas clear. C
 
 **Son et feu d’artifice.** Bips Web Audio (débloqués au premier tap, iOS). Canvas indigo / lime / banana. `prefers-reduced-motion` coupe les particules.
 
-**Sauvegarde.** Un seul `localStorage` : prénom, âge, OS, langue, missions battues, étoiles.
+**Sauvegarde.** Un seul `localStorage` : prénom, OS, mains (téléphone ou clavier), langue, missions battues, étoiles.
 
 ### English
 
 A linear quest. Mission 2 stays locked until 1 is clear. Each mission: copy as if you are 12, then 4 challenges drawn from a larger pool.
 
-**Challenge types.** (a) Press the real combo (keydown, repeats ignored). (b) “What does this combo do?” — 4 answers. (c) “Which keys?” — pick them on the drawn keyboard. (d) True / false. Decoys come from other missions. Copy words change (never the same word twice in a row).
+**Challenge types.** (a) Press the real combo (keydown, repeats ignored) — never on a phone: there you tap the glowing keys. (b) “What does this combo do?” — 4 answers. (c) “Which keys?” — pick them on the drawn keyboard. (d) True / false. Decoys come from other missions. Copy words change (never the same word twice in a row).
 
 **Screenshots and lock.** We do not ask you to press them: the computer steals Win+Shift+S, Cmd+Shift+4, Win+L, Cmd+Ctrl+Q. Those stay questions.
 
@@ -36,4 +36,4 @@ A linear quest. Mission 2 stays locked until 1 is clear. Each mission: copy as i
 
 **Sound and fireworks.** Web Audio beeps (unlocked on first tap, iOS). Canvas indigo / lime / banana. `prefers-reduced-motion` skips particles.
 
-**Save.** One `localStorage` key: name, age, OS, language, beaten missions, stars.
+**Save.** One `localStorage` key: name, OS, hands (phone or keyboard), language, beaten missions, stars.

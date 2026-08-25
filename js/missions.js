@@ -17,8 +17,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'Copier-coller', en: 'Copy-paste' },
     blurb: {
-      fr: 'La touche {mod}, c’est la touche boss. Tu la gardes appuyée, puis tu tapes C. Ça COPIE. La chose reste où elle est. Ensuite {mod}+V pose un jumeau ailleurs. {mod}+X, c’est Couper : la chose part, et tu la recolles avec V.',
-      en: 'The {mod} key is the boss key. Hold it, then tap C. That COPIES. The thing stays where it is. Then {mod}+V puts a twin somewhere else. {mod}+X is Cut: the thing leaves, and you paste it with V.'
+      fr: 'Copier, c’est photocopier : la chose reste. Couper, ça déménage. Tiens {mod}, puis C (copier), V (coller), X (couper).',
+      en: 'Copy is photocopying: the thing stays. Cut is a move. Hold {mod}, then C (copy), V (paste), X (cut).'
     },
     facts: [
       {
@@ -27,8 +27,8 @@ export const MISSIONS = [
         pressOk: true,
         copyWord: true,
         does: {
-          fr: 'Ça COPIE. La chose reste où elle est. Tu as un jumeau prêt à coller.',
-          en: 'That COPIES. The thing stays where it is. You have a twin ready to paste.'
+          fr: 'Ça COPIE. La chose reste.',
+          en: 'That COPIES. The thing stays.'
         },
         tips: [
           { truth: true, fr: 'Après une copie, l’original est encore là.', en: 'After a copy, the original is still there.' },
@@ -40,8 +40,8 @@ export const MISSIONS = [
         comboId: 'paste',
         pressOk: true,
         does: {
-          fr: 'Ça COLLE. Ça pose le jumeau à l’endroit du curseur.',
-          en: 'That PASTES. It drops the twin where the cursor is.'
+          fr: 'Ça COLLE le jumeau.',
+          en: 'That PASTES the twin.'
         },
         tips: [
           { truth: true, fr: 'Tu peux coller plusieurs fois la même copie.', en: 'You can paste the same copy more than once.' },
@@ -53,8 +53,8 @@ export const MISSIONS = [
         comboId: 'cut',
         pressOk: true,
         does: {
-          fr: 'Ça COUPE. La chose part d’ici. Tu la recolles ailleurs avec {mod}+V.',
-          en: 'That CUTS. The thing leaves this spot. You paste it somewhere else with {mod}+V.'
+          fr: 'Ça COUPE. La chose part.',
+          en: 'That CUTS. The thing leaves.'
         },
         tips: [
           { truth: true, fr: 'Couper + coller, c’est déménager. Copier + coller, c’est photocopier.', en: 'Cut + paste is moving. Copy + paste is photocopying.' },
@@ -66,8 +66,8 @@ export const MISSIONS = [
         comboId: 'copy',
         pressOk: true,
         does: {
-          fr: 'Copier n’efface rien. C’est une photocopieuse, pas une gomme.',
-          en: 'Copy deletes nothing. It is a photocopier, not an eraser.'
+          fr: 'Copier n’efface rien.',
+          en: 'Copy deletes nothing.'
         },
         tips: [
           { truth: true, fr: 'C puis V : un jumeau. X puis V : un déménagement.', en: 'C then V: a twin. X then V: a move.' },
@@ -82,8 +82,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'La machine à remonter le temps', en: 'The time machine' },
     blurb: {
-      fr: 'Tu as tapé une bêtise ? Pas de panique. {mod}+Z, c’est Annuler. Ça recule d’un pas. Encore Z, encore un pas. Pour aller dans l’autre sens : {mod}+{shift}+Z (ou {mod}+Y sur Windows). C’est Rétablir. La machine avance à nouveau.',
-      en: 'You typed a mess? No panic. {mod}+Z is Undo. It steps back once. Another Z, another step. The other way: {mod}+{shift}+Z (or {mod}+Y on Windows). That is Redo. The machine moves forward again.'
+      fr: 'Tu as tapé une bêtise ? On recule. {mod}+Z annule. {mod}+{shift}+Z (ou {mod}+Y sur Windows) rétablit.',
+      en: 'You typed a mess? We step back. {mod}+Z undoes. {mod}+{shift}+Z (or {mod}+Y on Windows) redoes.'
     },
     facts: [
       {
@@ -91,8 +91,8 @@ export const MISSIONS = [
         comboId: 'undo',
         pressOk: true,
         does: {
-          fr: 'Ça ANNULE. La dernière action recule. Comme un bouton « oups ».',
-          en: 'That UNDOES. The last action steps back. Like an “oops” button.'
+          fr: 'Ça ANNULE. Comme un bouton « oups ».',
+          en: 'That UNDOES. Like an “oops” button.'
         },
         tips: [
           { truth: true, fr: 'Tu peux appuyer plusieurs fois sur Z pour reculer plus loin.', en: 'You can tap Z several times to go further back.' },
@@ -104,8 +104,8 @@ export const MISSIONS = [
         comboId: 'redo',
         pressOk: true,
         does: {
-          fr: 'Ça RÉTABLIT. Tu as trop annulé ? Ça avance à nouveau.',
-          en: 'That REDOES. You undid too far? It moves forward again.'
+          fr: 'Ça RÉTABLIT. Ça avance à nouveau.',
+          en: 'That REDOES. It moves forward again.'
         },
         tips: [
           { truth: true, fr: 'Rétablir, c’est l’inverse d’Annuler.', en: 'Redo is the opposite of Undo.' },
@@ -146,8 +146,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'Tout prendre', en: 'Take it all' },
     blurb: {
-      fr: '{mod}+A, c’est Tout sélectionner. Toute la page, tout le texte, tout le dessin devient bleu (ou encadré). Ensuite tu peux copier, couper, ou remplacer. C’est « tout prendre », pas « tout jeter ».',
-      en: '{mod}+A is Select all. The whole page, all the text, the whole drawing goes blue (or outlined). Then you can copy, cut, or replace. It means “take it all”, not “throw it away”.'
+      fr: 'Tout prendre, ce n’est pas tout jeter. Ça encadre. {mod}+A sélectionne toute la page.',
+      en: 'Take-all is not throw-away. It outlines. {mod}+A selects the whole page.'
     },
     facts: [
       {
@@ -155,8 +155,8 @@ export const MISSIONS = [
         comboId: 'selectAll',
         pressOk: true,
         does: {
-          fr: 'Ça prend TOUT. Tout le texte (ou tout le dessin) est sélectionné.',
-          en: 'That takes ALL. All the text (or the whole drawing) is selected.'
+          fr: 'Ça prend TOUT le texte (ou le dessin).',
+          en: 'That takes ALL the text (or drawing).'
         },
         tips: [
           { truth: true, fr: 'Après {mod}+A tu peux copier tout d’un coup avec {mod}+C.', en: 'After {mod}+A you can copy everything at once with {mod}+C.' },
@@ -210,8 +210,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'La pierre de sauvegarde', en: 'The save stone' },
     blurb: {
-      fr: 'Ton dessin est trop beau pour disparaître. {mod}+S, c’est Sauvegarder. La page (ou le fichier) est rangée. Si l’ordi s’éteint, le dessin est encore là. Pas {mod}+S = parfois tout perdu. La pierre de sauvegarde, tu la touches souvent.',
-      en: 'Your drawing is too good to vanish. {mod}+S is Save. The page (or file) is put away safely. If the computer sleeps, the drawing is still there. No {mod}+S = sometimes everything gone. Touch the save stone often.'
+      fr: 'Sauver, c’est ranger le dessin pour qu’il ne s’envole pas. {mod}+S, souvent. Pas seulement à la fin.',
+      en: 'Save puts the drawing away so it does not fly off. {mod}+S, often. Not only at the end.'
     },
     facts: [
       {
@@ -219,8 +219,8 @@ export const MISSIONS = [
         comboId: 'save',
         pressOk: true,
         does: {
-          fr: 'Ça SAUVE. Le fichier est rangé. Ton dessin ne s’envole pas.',
-          en: 'That SAVES. The file is put away. Your drawing does not fly off.'
+          fr: 'Ça SAUVE. Le dessin ne s’envole pas.',
+          en: 'That SAVES. The drawing stays.'
         },
         tips: [
           { truth: true, fr: 'Sauvegarde souvent, pas seulement à la fin.', en: 'Save often, not only at the end.' },
@@ -274,8 +274,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'Les onglets', en: 'The tabs' },
     blurb: {
-      fr: 'Un onglet, c’est une page dans le navigateur, en haut, comme un post-it. {mod}+T ouvre un onglet neuf. {mod}+W le ferme. Ctrl+Tab passe à l’onglet suivant. Ce n’est pas une nouvelle fenêtre : c’est une nouvelle feuille dans le même cahier.',
-      en: 'A tab is a page in the browser, up top, like a sticky note. {mod}+T opens a fresh tab. {mod}+W closes it. Ctrl+Tab hops to the next tab. It is not a new window: it is a new sheet in the same notebook.'
+      fr: 'Un onglet, c’est une feuille dans le même cahier. Pas une nouvelle fenêtre. {mod}+T ouvre. {mod}+W ferme. Ctrl+Tab change d’onglet.',
+      en: 'A tab is a sheet in the same notebook. Not a new window. {mod}+T opens. {mod}+W closes. Ctrl+Tab changes tab.'
     },
     facts: [
       {
@@ -283,8 +283,8 @@ export const MISSIONS = [
         comboId: 'newTab',
         pressOk: true,
         does: {
-          fr: 'Ça ouvre un NOUVEL ONGLET. Une page vide, à côté des autres.',
-          en: 'That opens a NEW TAB. An empty page, next to the others.'
+          fr: 'Ça ouvre un NOUVEL ONGLET.',
+          en: 'That opens a NEW TAB.'
         },
         tips: [
           { truth: true, fr: 'Un onglet, c’est une feuille dans le même cahier.', en: 'A tab is a sheet in the same notebook.' },
@@ -296,8 +296,8 @@ export const MISSIONS = [
         comboId: 'closeTab',
         pressOk: true,
         does: {
-          fr: 'Ça FERME l’onglet devant toi. Les autres restent.',
-          en: 'That CLOSES the tab in front of you. The others stay.'
+          fr: 'Ça FERME cet onglet. Les autres restent.',
+          en: 'That CLOSES this tab. The others stay.'
         },
         tips: [
           { truth: true, fr: '{mod}+W ferme un onglet, pas tout le navigateur (en général).', en: '{mod}+W closes one tab, not the whole browser (usually).' },
@@ -338,8 +338,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'La loupe', en: 'The magnifier' },
     blurb: {
-      fr: 'La page est longue. Tu cherches un mot. {mod}+F ouvre la loupe. Tu tapes le mot. L’ordi le surligne. Ce n’est pas Google : ça cherche ICI, dans cette page, pas sur tout Internet.',
-      en: 'The page is long. You want a word. {mod}+F opens the magnifier. You type the word. The computer highlights it. This is not Google: it searches HERE, on this page, not the whole Internet.'
+      fr: 'La loupe cherche ICI, dans cette page. Pas sur tout Internet. {mod}+F, tu tapes le mot, la page le surligne.',
+      en: 'The magnifier searches HERE, on this page. Not the whole Internet. {mod}+F, you type the word, the page highlights it.'
     },
     facts: [
       {
@@ -347,8 +347,8 @@ export const MISSIONS = [
         comboId: 'find',
         pressOk: true,
         does: {
-          fr: 'Ça ouvre la LOUPE. Tape un mot, la page le trouve.',
-          en: 'That opens the MAGNIFIER. Type a word, the page finds it.'
+          fr: 'Ça ouvre la LOUPE. La page trouve le mot.',
+          en: 'That opens the MAGNIFIER. The page finds the word.'
         },
         tips: [
           { truth: true, fr: 'La page est longue. {mod}+F trouve le mot.', en: 'The page is long. {mod}+F finds the word.' },
@@ -402,8 +402,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'Les yeux zoom', en: 'Zoom eyes' },
     blurb: {
-      fr: 'Les lettres sont trop petites ? {mod} et +, ça GROSSIT. {mod} et −, ça rapetisse. {mod}+0, tout redevient normal. C’est la page qui change, pas tes vrais yeux. Sur beaucoup de claviers, + est sur la même touche que =.',
-      en: 'Letters too small? {mod} and +, that GROWS. {mod} and −, that shrinks. {mod}+0, everything is normal again. The page changes, not your real eyes. On many keyboards, + lives on the same key as =.'
+      fr: 'C’est la page qui grossit, pas tes vrais yeux. {mod} et + agrandit. {mod} et − rapetisse. {mod}+0 remet normal.',
+      en: 'The page grows, not your real eyes. {mod} and + grows. {mod} and − shrinks. {mod}+0 is normal again.'
     },
     facts: [
       {
@@ -411,8 +411,8 @@ export const MISSIONS = [
         comboId: 'zoomIn',
         pressOk: true,
         does: {
-          fr: 'Ça GROSSIT la page. Les lettres deviennent plus grandes.',
-          en: 'That GROWS the page. Letters get bigger.'
+          fr: 'Ça GROSSIT la page.',
+          en: 'That GROWS the page.'
         },
         tips: [
           { truth: true, fr: '{mod} et + = zoom avant. Plus facile à lire.', en: '{mod} and + = zoom in. Easier to read.' },
@@ -424,8 +424,8 @@ export const MISSIONS = [
         comboId: 'zoomOut',
         pressOk: true,
         does: {
-          fr: 'Ça RAPETISSE la page. Tu vois plus de choses d’un coup.',
-          en: 'That SHRINKS the page. You see more at once.'
+          fr: 'Ça RAPETISSE la page.',
+          en: 'That SHRINKS the page.'
         },
         tips: [
           { truth: true, fr: '{mod} et − = zoom arrière.', en: '{mod} and − = zoom out.' },
@@ -437,8 +437,8 @@ export const MISSIONS = [
         comboId: 'zoomReset',
         pressOk: true,
         does: {
-          fr: 'Ça REMET le zoom à 100 %. Ni trop gros, ni trop petit.',
-          en: 'That RESETS zoom to 100%. Not too big, not too small.'
+          fr: 'Ça REMET le zoom à 100 %.',
+          en: 'That RESETS zoom to 100%.'
         },
         tips: [
           { truth: true, fr: '{mod}+0, c’est « reviens à la taille normale ».', en: '{mod}+0 means “back to normal size”.' },
@@ -466,8 +466,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'Changer de fenêtre', en: 'Switch window' },
     blurb: {
-      fr: 'Tu as le dessin d’un côté, la leçon de l’autre. {alt}+Tab (sur Mac : {mod}+Tab) saute d’une fenêtre à l’autre. Tu restes appuyé sur {alt} (ou {mod}), tu tapes Tab, tu relâches quand tu vois la bonne. L’ordinateur peut « voler » ces touches : on t’explique, et on t’écoute si tu reviens.',
-      en: 'Drawing on one side, lesson on the other. {alt}+Tab (on a Mac: {mod}+Tab) hops from window to window. Hold {alt} (or {mod}), tap Tab, let go when you see the right one. The computer may “steal” these keys: we explain, and we notice if you come back.'
+      fr: 'Changer de fenêtre, c’est passer du dessin à la leçon sans tout fermer. {alt}+Tab (sur Mac : {mod}+Tab). Ici, tu choisis : l’ordi vole souvent ces touches.',
+      en: 'Switch window means drawing ↔ lesson, without closing everything. {alt}+Tab (on a Mac: {mod}+Tab). Here you choose: the computer often steals those keys.'
     },
     facts: [
       {
@@ -530,8 +530,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'Astuces de souris', en: 'Mouse tricks' },
     blurb: {
-      fr: 'La souris a des super-pouvoirs. Un double-clic (clic-clic rapide) prend un mot. Le clic droit (l’autre bouton) ouvre un petit menu. Glisser, c’est : bouton enfoncé, bouger, relâcher. On ne peut pas forcer le vrai menu de l’ordi ici — on détecte tes gestes, et on explique le reste.',
-      en: 'The mouse has superpowers. A double-click (quick click-click) grabs a word. Right-click (the other button) opens a little menu. Drag is: button down, move, let go. We cannot force the real OS menu here — we detect the gestures we can, and we explain the rest.'
+      fr: 'La souris a trois trucs : double-clic, clic droit, glisser. Double-clic = un mot. Clic droit = un menu. Glisser = bouton enfoncé, bouger, relâcher.',
+      en: 'The mouse has three tricks: double-click, right-click, drag. Double-click = a word. Right-click = a menu. Drag = button down, move, let go.'
     },
     facts: [
       {
@@ -598,8 +598,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'Capture', en: 'Screenshot' },
     blurb: {
-      fr: 'Une capture, c’est une photo de l’écran. Sur Windows : {win}+{shift}+S. Sur Mac : {mod}+{shift}+4. Sur Linux : souvent Impr. écran. On ne te demande pas d’appuyer ici — l’ordi « vole » ces touches et ouvre son propre outil. Tu apprends lesquelles, et pourquoi.',
-      en: 'A screenshot is a photo of the screen. On Windows: {win}+{shift}+S. On a Mac: {mod}+{shift}+4. On Linux: often Print Screen. We will not ask you to press it here — the computer “steals” those keys and opens its own tool. You learn which ones, and why.'
+      fr: 'Une capture, c’est une photo de l’écran. Ça n’envoie rien. Windows : {win}+{shift}+S. Mac : {mod}+{shift}+4. Linux : Impr. écran. Ici tu choisis, tu n’appuies pas.',
+      en: 'A screenshot is a photo of the screen. It sends nothing. Windows: {win}+{shift}+S. Mac: {mod}+{shift}+4. Linux: Print Screen. Here you choose, you do not press.'
     },
     facts: [
       {
@@ -607,8 +607,8 @@ export const MISSIONS = [
         comboId: 'screenshot',
         pressOk: false,
         does: {
-          fr: 'Ça PREND UNE PHOTO de l’écran (ou d’un morceau). Ça ne l’envoie à personne.',
-          en: 'That TAKES A PHOTO of the screen (or a piece of it). It sends it to nobody.'
+          fr: 'Ça PREND UNE PHOTO de l’écran. Ça n’envoie rien.',
+          en: 'That TAKES A PHOTO of the screen. It sends nothing.'
         },
         tips: [
           { truth: true, fr: 'Windows : {win}+{shift}+S. Mac : {mod}+{shift}+4. Linux : Impr. écran.', en: 'Windows: {win}+{shift}+S. Mac: {mod}+{shift}+4. Linux: Print Screen.' },
@@ -662,8 +662,8 @@ export const MISSIONS = [
     isBoss: false,
     title: { fr: 'Sécurité express', en: 'Safety express' },
     blurb: {
-      fr: 'Trois règles, pas de peur : 1) Un pop-up bizarre qui arrive tout seul ? Tu ne cliques pas. Tu fermes. 2) Un site que tu n’as pas ouvert te demande le mot de passe ? Tu ne le donnes pas. Tu demandes à un adulte. 3) Tu te lèves ? Tu verrouilles : {win}+L (Windows / Linux) ou {mod}+{ctrl}+Q (Mac). L’écran attend ton code. Rien de grave, juste malin.',
-      en: 'Three rules, not scary: 1) A weird pop-up that just appeared? You do not click. You close it. 2) A site you did not open asks for the password? You do not give it. You ask an adult. 3) You stand up? You lock: {win}+L (Windows / Linux) or {mod}+Ctrl+Q (Mac). The screen waits for your code. Nothing dramatic — just smart.'
+      fr: 'Trois règles, pas de peur : pas de pop-up bizarre, pas de mot de passe à une page apparue toute seule, verrouille si tu te lèves. Verrouiller : {win}+L (Windows / Linux) ou {mod}+{ctrl}+Q (Mac).',
+      en: 'Three rules, not scary: no weird pop-up, no password to a page that just appeared, lock if you stand up. Lock: {win}+L (Windows / Linux) or {mod}+Ctrl+Q (Mac).'
     },
     facts: [
       {
@@ -726,8 +726,8 @@ export const MISSIONS = [
     isBoss: true,
     title: { fr: 'BOSS — Le Grand Mélange', en: 'BOSS — The Grand Mix' },
     blurb: {
-      fr: 'Le Grand Mélange. Dix épreuves, chrono qui tourne, piochées dans toutes les missions. Deux parties ne se ressemblent pas. Tu dégages ? Couronne et feu d’artifice. Tu rates ? Tu réessaies. Les captures et le verrou restent des questions : l’ordi volerait les touches.',
-      en: 'The Grand Mix. Ten trials, clock running, drawn from every mission. No two runs look the same. You clear it? Crown and fireworks. You miss? You try again. Screenshots and lock stay questions: the computer would steal the keys.'
+      fr: 'Dix épreuves, chrono qui tourne, piochées partout. Deux parties ne se ressemblent pas. Tu rates ? Tu réessaies.',
+      en: 'Ten trials, clock running, drawn from everywhere. No two runs look the same. You miss? You try again.'
     },
     facts: []
   }

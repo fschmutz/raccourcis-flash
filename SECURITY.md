@@ -2,6 +2,6 @@
 
 This is a static GitHub Pages app. There is no server and no account.
 
-Nothing is uploaded. Name, age, language, OS choice, and mission stars stay in `localStorage` on this device. If you find a way the page exfiltrates player data, open a private [security advisory](https://github.com/fschmutz/shortcut-flash/security/advisories/new) or an issue if that form is unavailable.
+Nothing is uploaded. Name, language, OS, hands (phone or keyboard), and mission stars stay in `localStorage` on this device. If you find a way the page exfiltrates player data, open a private [security advisory](https://github.com/fschmutz/shortcut-flash/security/advisories/new) or an issue if that form is unavailable.
 
 Do not report “the service worker cached an old build” here — that is [Troubleshooting](https://github.com/fschmutz/shortcut-flash/wiki/Troubleshooting).
