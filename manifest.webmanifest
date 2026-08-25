@@ -1,0 +1,25 @@
+{
+  "name": "Raccourcis Flash",
+  "short_name": "Raccourcis",
+  "description": "One quest. Keyboard shortcuts for ages 10–15. Nothing is uploaded.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0D0624",
+  "theme_color": "#0D0624",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "assets/favicon.png",
+      "sizes": "360x360",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/apple-touch-icon.png",
+      "sizes": "360x360",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
